@@ -375,10 +375,17 @@
 
         <section id="order-form" class="bg-white p-4 rounded shadow-sm mb-4">
             <h2 class="mb-3">Place an Order</h2>
-            <form id="foodForm" method="POST" action="addOrder.php">
+            <form id="foodForm" method="POST" action="order.php">
                 <div class="mb-3">
                     <label for="foodName" class="form-label">Food Name:</label>
-                    <input type="text" id="foodName" name="foodName" class="form-control" required>
+                    <select id="foodName" name="foodName" class="form-select" required>
+                        <option value="" disabled selected>Select a food item</option>
+                        <option value="Iced Caramel Macchiatos" data-price="39">Iced Caramel Macchiatos - ₱39</option>
+                        <option value="Donya Berry With Coffee" data-price="39">Donya Berry With Coffee - ₱39</option>
+                        <option value="Don Matchatos With Coffee" data-price="39">Don Matchatos With Coffee - ₱39</option>
+                        <option value="Don Darko With Coffee" data-price="39">Don Darko With Coffee - ₱39</option>
+                        <!-- Add more options as needed -->
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Quantity:</label>
@@ -386,7 +393,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">Price:</label>
-                    <input type="number" id="price" name="price" class="form-control" step="0.01" required>
+                    <input type="number" id="price" name="price" class="form-control" step="0.01" required readonly>
                 </div>
                 <button type="submit" class="btn btn-success">Add Order</button>
             </form>
