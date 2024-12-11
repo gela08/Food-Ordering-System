@@ -37,36 +37,39 @@ document.addEventListener("DOMContentLoaded", () => {
                         console.log("Appending row:", row); // Debugging log
                         orderTableBody.appendChild(row); // Append the new row to the table body
                     });
+
+                    // Add event listeners to delete buttons
+                    const deleteButtons = document.querySelectorAll('.delete-button');
+                    deleteButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                            const orderId = this.getAttribute('data-id');
+                            deleteOrder(orderId);
+                        });
+                    });
                 } else {
                     // If no orders, display a message
                     orderTableBody.innerHTML = "<tr><td colspan='6' class='text-center'>No orders found.</td></tr>";
                 }
-            
-                attachDeleteEventListeners(); // Attach event listeners for delete buttons
             })
             .catch(error => console.error("Error fetching orders:", error));
     }
 
-    function attachDeleteEventListeners() {
-        const deleteButtons = document.querySelectorAll(".delete-button");
-        deleteButtons.forEach(button => {
-            button.addEventListener("click", function() {
-                const orderId = this.getAttribute("data-id");
-                deleteOrder(orderId);
-            });
-        });
-    }
-
     function deleteOrder(orderId) {
-        fetch(`orders.php?id=${orderId}`, { method: "DELETE" }) // Use DELETE method for deletion
+        if (confirm("Are you sure you want to delete this order?")) {
+            fetch(`orders.php?id=${orderId}`, { method: "DELETE" })
             .then(response => {
-                if (response.ok) {
-                    fetchOrders(); // Refresh the order list after deletion
-                } else {
-                    console.error("Error deleting order:", response.statusText);
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
                 }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Delete response:", data);
+                // Refresh the order list after deletion
+                fetchOrders();
             })
             .catch(error => console.error("Error deleting order:", error));
+        }
     }
 
     // Update price based on selected food item
@@ -110,6 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(error => console.error("Error adding order:", error));
     });
 
-    // Initial fetch
+    // Initial fetch to load existing orders
     fetchOrders();
 });
