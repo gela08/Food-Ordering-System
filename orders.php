@@ -46,16 +46,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 }
 
 // Handle delete order request
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['id'])) {
     $id = (int)$_GET['id'];
 
     $stmt = $conn->prepare("DELETE FROM orders WHERE id = ?");
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {
-        echo "Order deleted successfully";
+        echo json_encode(["message" => "Order deleted successfully"]);
     } else {
-        echo "Error: " . $conn->error;
+        echo json_encode(["error" => "Error: " . $conn->error]);
     }
 
     $stmt->close();
