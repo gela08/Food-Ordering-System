@@ -1,55 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Ordering System</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="marquee.css">
+    <link rel="stylesheet" href="bg-gradient.css">
 </head>
 
-<body>
-    <header>
-        <h1>Welcome to Dino's Cave Crave</h1>
+<body class="bg-light text-dark">
+    <header class="bg-success text-white text-center py-4">
+        <h1>Food Ordering System</h1>
     </header>
-    <main>
-        <div class="marquee section container lazy loading">
-            <h1 class="marquee__title">Featured Stalls</h1>
-            <div class="marquee__wrapper">
-                <img class="marquee__img amara-snack-bar__img lazy__img" data-src="/marquee/amara-snack-bar-logo.webp"
-                    alt="Amarah's Snack Bar" style="--n: 1">
+    <main class="container my-4">
 
-                <img class="marquee__img cafe-ferrer__img lazy__img" data-src="/marquee/cafe-ferrer-logo.webp"
-                    alt="Cafe Ferrer" style="--n: 2">
-
-                <img class="marquee__img chicks-ahoy__img lazy__img" data-src="/marquee/chicks-ahoy-logo.webp"
-                    alt="Chicks Ahoy" style="--n: 3">
-
-                <img class="marquee__img coffito__img lazy__img" data-src="/marquee/coffito-logo.webp" alt="Coffito"
-                    style="--n: 4">
-
-                <img class="marquee__img kuya-jong__img lazy__img" data-src="/marquee/kuya-jong-logo.webp"
-                    alt="Kuya Jong's Lutong Bahay" style="--n: 5">
-
-                <img class="marquee__img santino__img lazy__img" data-src="/marquee/santino-logo.webp" alt="Santino's"
-                    style="--n: 6">
-
-                <img class="marquee__img top-spatula__img lazy__img" alt="Top Spatula"
-                    data-src="/marquee/top-spatula-logo.webp" style="--n: 7">
-
-                <img class="marquee__img titas-catering__img lazy__img" alt="Tita's Catering Services"
-                    data-src="/marquee/titas-catering-logo.webp" style="--n: 8">
-
-                <img class="marquee__img waffle-time__img lazy__img" alt="Waffle Time"
-                    data-src="/marquee/waffle-time-logo.webp" style="--n: 9">
-
-                <img class="marquee__img zekiah-sisig__img lazy__img" alt="Zekiah's Sisig Corner"
-                    data-src="/marquee/zekiah-sisig-logo.webp" style="--n: 10">
-
-                <img class="marquee__img colil__img lazy__img" alt="Colil Food Corner"
-                    data-src="/marquee/colil-logo.webp" style="--n: 11">
+        <div class="marquee-container overflow-hidden bg-light shadow-sm">
+            <div class="marquee-content d-flex align-items-center">
+              <div class="marquee-item px-4 py-2 bg-primary text-white rounded-pill mx-2" id="iced-caramel" >
+                <img class="img-style card-img-top" src="menu/iced-caramel-macchiatos-coffee-no-bg.png" alt="Iced Caramel Macchiatos">
+              </div>
+              <div class="marquee-item px-4 py-2 bg-success text-white rounded-pill mx-2" id="donya-berry-cof">
+                <img class="img-style card-img-top" id="donya-berry-cof-img" src="menu/donya-berry-coffee-no-bg.png" alt="Donya Berry With Coffee">
+              </div>
+              <div class="marquee-item px-4 py-2 bg-info text-white rounded-pill mx-2" id="don-matcha-cof">
+                    <img class="img-style card-img-top" src="menu/don-matchatos-coffee-no-bg.png" alt="Don Matchatos With Coffee">
+              </div>
+              <div class="marquee-item px-4 py-2 bg-warning text-dark rounded-pill mx-2">Item 4</div>
+              <div class="marquee-item px-4 py-2 bg-danger text-white rounded-pill mx-2">Item 5</div>
             </div>
-        </div>
+          </div>
 
         <!-- FIRST 4 COFFEE MENU  (COFFEE SERIES)-->
         <h2>With Coffee</h2>
@@ -59,8 +41,7 @@
                 <!-- Iced Caramel Macchiatos -->
                 <div class="coffee-item card">
                     <div class="img-style" id="iced-caramel">
-                        <img class="card-img-top" src="menu/iced-caramel-macchiatos-coffee-no-bg.png"
-                            alt="Iced Caramel Macchiatos">
+                        <img class="card-img-top" src="menu/iced-caramel-macchiatos-coffee-no-bg.png" alt="Iced Caramel Macchiatos">
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Iced Caramel Macchiatos</h5>
@@ -107,7 +88,7 @@
                 </div>
 
                 <!-- Don Darko With Coffee -->
-                <div class="coffee-item card" style="width: 18rem;">
+                <div class="coffee-item card">
                     <div class="img-style" id="don-darko-cof">
                         <img class="card-img-top" src="menu/don-darko-coffee-no-bg.png" alt="Don Darko With Coffee">
                     </div>
@@ -314,28 +295,107 @@
         </section>
         <!-- END OF FOURTH 4 COFFEE MENU (NON-COFFEE SERIES) -->
 
+        <!-- START OF 24 CHICKEN MEALS -->
+        <section class="coffee-menu">
+            <h2>Meals</h2>
+            <div class="coffee-item-container">
 
+                <!-- Boneless Chicken Rice Meal RM2 -->
+                <div class="coffee-item card">
+                    <div class="img-style">
+                        <img class="card-img-top" src="menu/24-chicken-RM2.png" alt="Boneless Chicken Rice Meal RM2">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Boneless Chicken Rice Meal RM2</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <p class="card-text list-group-item">Treat yourself to some boneless chicken goodness!
+                            The chicken joint offers juicy Korean fried chicken that comes in different, mouth-watering
+                            flavors. </p>
+                        <p class="card-text list-group-item">Two (2) pcs boneless chicken with rice</p>
+                        <li class="list-group-item">₱95</li>
+                    </ul>
+                </div>
 
-        <section id="order-form">
-            <h2>Place an Order</h2>
+                <!-- Boneless Chicken Rice Meal RM3 -->
+                <div class="coffee-item card">
+                    <div class="img-style">
+                        <img class="card-img-top" src="menu/24-chicken-RM3.png" alt="Boneless Chicken Rice Meal RM3">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Boneless Chicken Rice Meal RM3</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <p class="card-text list-group-item">Treat yourself to some boneless chicken goodness!
+                            The chicken joint offers juicy Korean fried chicken that comes in different, mouth-watering
+                            flavors. </p>
+                        <p class="card-text list-group-item"> Three (3) pcs boneless chicken with rice</p>
+                        <li class="list-group-item">₱130</li>
+                    </ul>
+                </div>
+
+                <!-- Kimchi Rice W/ 2pcs Boneless Chicken -->
+                <div class="coffee-item card">
+                    <div class="img-style">
+                        <img class="card-img-top" src="menu/24-chicken-KRM2.png"
+                            alt="Kimchi Rice W/ 2pcs Boneless Chicken">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Kimchi Rice W/ 2pcs Boneless Chicken</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <p class="card-text list-group-item">Treat yourself to some boneless chicken goodness!
+                            The chicken joint offers juicy Korean fried chicken that comes in different, mouth-watering
+                            flavors. </p>
+                        <p class="card-text list-group-item">Two (2) pcs boneless chicken with kimchi rice</p>
+                        <li class="list-group-item">₱135</li>
+                    </ul>
+                </div>
+
+                <!-- Kimchi Rice W/ 3pcs Boneless Chicken -->
+                <div class="coffee-item card">
+                    <div class="img-style">
+                        <img class="card-img-top" src="menu/24-chicken-KRM3.png"
+                            alt="Kimchi Rice W/ 3pcs Boneless Chicken">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Kimchi Rice W/ 3pcs Boneless Chicken</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <p class="card-text list-group-item">Treat yourself to some boneless chicken goodness!
+                            The chicken joint offers juicy Korean fried chicken that comes in different, mouth-watering
+                            flavors. </p>
+                        <p class="card-text list-group-item"> Three (3) pcs boneless chicken with kimchi rice</p>
+                        <li class="list-group-item">₱170</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+         <!-- END OF 24 CHICKEN MEALS -->
+
+        <section id="order-form" class="bg-white p-4 rounded shadow-sm mb-4">
+            <h2 class="mb-3">Place an Order</h2>
             <form id="foodForm" method="POST" action="addOrder.php">
-                <label for="foodName">Food Name:</label>
-                <input type="text" id="foodName" name="foodName" required>
-
-                <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" name="quantity" min="1" required>
-
-                <label for="price">Price:</label>
-                <input type="number" id="price" name="price" step="0.01" required>
-
-                <button type="submit">Add Order</button>
+                <div class="mb-3">
+                    <label for="foodName" class="form-label">Food Name:</label>
+                    <input type="text" id="foodName" name="foodName" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" class="form-control" min="1" required>
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price:</label>
+                    <input type="number" id="price" name="price" class="form-control" step="0.01" required>
+                </div>
+                <button type="submit" class="btn btn-success">Add Order</button>
             </form>
         </section>
 
-        <section id="order-list">
-            <h2>Current Orders</h2>
-            <table>
-                <thead>
+        <section id="order-list" class="bg-white p-4 rounded shadow-sm">
+            <h2 class="mb-3">Current Orders</h2>
+            <table class="table table-striped table-hover">
+                <thead class="table-light">
                     <tr>
                         <th>Order ID</th>
                         <th>Food Name</th>
@@ -351,7 +411,8 @@
             </table>
         </section>
     </main>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="scripts.js"></script>
 </body>
-
 </html>

@@ -1,0 +1,82 @@
+/* GRADIENT */
+
+/* W COFFEE */
+
+#iced-caramel {
+    background-image: linear-gradient(to top, #f4f2e2, #eae6be, #dfc28a, #b88331, #a56400, #38220f);
+}
+
+#donya-berry-cof {
+    background-image: linear-gradient(to top, #cb5475, #e5a9ba, #f2d4dc, #ece0d1, #967259, #634832, #38220f);
+}
+
+#don-matcha-cof {
+    background-image: linear-gradient(to top, #49592a, #658c5e, #c3d4a5, #fff0d6, #dbc1ac, #967259, #634832, #38220f);
+}
+
+#don-darko-cof {
+    background-image: linear-gradient(to top, #0c0906, #584b3e, #766257, #bdaaaa, #dbc1ac, #967259, #634832, #38220f);
+}
+
+#matcha-berry-cof {
+    background-image: linear-gradient(to top, #49592a, #5d8b55, #82a742, #c76682, #cc6985, #c76682, #967259, #634832, #38220f);
+}
+
+#black-forest-cof {
+    background-image: linear-gradient(to top, #000000, #8e0b21, #cb5475, #e5a9ba, #f2d4dc, #d6a684, #967259, #634832, #38220f);
+}
+
+#oreo-cof {
+    background-image: linear-gradient(to top, #000000, #505050, #8a8a8a, #b8b8b8, #cfcfcf, #d6a684, #967259, #634832, #38220f);
+}
+
+#brown-spanish {
+    background-image: linear-gradient(to top, #f7ebde, #dbc1ac, #967259, #634832, #38220f);
+}
+
+/* NO COFFEE */
+
+#don-matcha {
+    background-image: linear-gradient(to top, #49592a, #82a742, #b4dc87, #c6e99f, #e4f8ba, #feffe9);
+}
+
+#donya-berry {
+    background-image: linear-gradient(to top, #be2952, #cb5475, #d87f97, #e5a9ba, #f2d4dc, #feffe9);
+}
+
+#don-darko {
+    background-image: linear-gradient(to top, #0c0906, #291f1f, #5a4646, #725b5b, #b19696, #e0caca, #feffe9);
+}
+
+#matcha-berry {
+    background-image: linear-gradient(to top, #49592a, #5d8b55, #82a742, #c76682, #cc6985, #c76682);
+}
+
+#black-forest {
+    background-image: linear-gradient(to top, #000000, #8e0b21, #cb5475, #e5a9ba, #f2d4dc);
+}
+
+#oreo {
+    background-image: linear-gradient(to top, #000000, #505050, #8a8a8a, #b8b8b8, #cfcfcf);
+}
+
+
+/* MENU IMAGES */
+
+/* W COFFEE */
+
+#donya-berry-cof-img {
+    height: auto;
+}
+
+#black-forest-cof-img {
+    height: auto;
+}
+
+#oreo-cof-img {
+    height: auto;
+}
+
+#brown-spanish-img {
+    height: auto;
+}
