@@ -62,5 +62,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['id'])) {
     exit;
 }
 
+// Handle update order request
+if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    parse_str(file_get_contents("php://input"), $_PUT); // Parse the input data
+
+    $id = (int)$_PUT['id'];
+    $foodName = $_PUT['foodName'];
+    $quantity = (int)$_PUT['quantity'];
+    $price = (float)$_PUT['price'];
+
+    $stmt = $conn->prepare("UPDATE orders SET foodName = ?, quantity = ?, price = ? WHERE id = ?");
+    $stmt->bind_param("sidi", $foodName, $quantity, $price, $id);
+
+    if ($stmt->execute()) {
+        echo "Order updated successfully";
+    } else {
+        echo "Error: " . $conn->error;
+    }
+
+    $stmt->close();
+    exit;
+}
+
 $conn->close();
 ?>
