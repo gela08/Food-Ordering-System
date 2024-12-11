@@ -5,153 +5,139 @@ document.addEventListener("DOMContentLoaded", () => {
     const priceInput = document.getElementById("price");
     const foodForm = document.getElementById("foodForm");
 
+    const editOrderModal = new bootstrap.Modal(document.getElementById("editOrderModal"));
+    const editOrderForm = document.getElementById("editOrderForm");
+    const editFoodName = document.getElementById("editFoodName");
+    const editQuantity = document.getElementById("editQuantity");
+    const editPrice = document.getElementById("editPrice");
+    const editOrderId = document.getElementById("editOrderId");
+
+    // Copy food options to the edit modal select element
+    function populateEditFoodOptions() {
+        editFoodName.innerHTML = foodSelect.innerHTML;
+    }
+
     // Fetch orders from the server
     function fetchOrders() {
         fetch("orders.php?action=fetch")
             .then(response => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
+                if (!response.ok) throw new Error("Network response was not ok");
                 return response.json();
             })
             .then(data => {
-                console.log("Fetched orders:", data); // Log the fetched data for debugging
-                orderTableBody.innerHTML = ""; // Clear the table body before adding new rows
-            
-                // Check if data is an array and has elements
+                orderTableBody.innerHTML = "";
+
                 if (Array.isArray(data) && data.length > 0) {
                     data.forEach(order => {
-                        const row = document.createElement("tr"); // Create a new table row
-
-                        // Set the inner HTML of the row
+                        const row = document.createElement("tr");
                         row.innerHTML = `
                             <td>${order.id}</td>
                             <td>${order.foodName}</td>
                             <td>${order.quantity}</td>
-                            <td>${parseFloat(order.price).toFixed(2)}</td> <!-- Convert price to float -->
-                            <td>${(order.quantity * parseFloat(order.price)).toFixed(2)}</td> <!-- Convert price to float -->
+                            <td>${parseFloat(order.price).toFixed(2)}</td>
+                            <td>${(order.quantity * parseFloat(order.price)).toFixed(2)}</td>
                             <td>
-                                <button class="edit-button" data-id="${order.id}" data-food="${order.foodName}" data-quantity="${order.quantity}" data-price="${order.price}">Edit</button>
-                                <button class="delete-button" data-id="${order.id}">Delete</button>
+                                <button class="edit-button btn btn-sm btn-primary" data-id="${order.id}" data-food="${order.foodName}" data-quantity="${order.quantity}" data-price="${order.price}">Edit</button>
+                                <button class="delete-button btn btn-sm btn-danger" data-id="${order.id}">Delete</button>
                             </td>
                         `;
-
-                        console.log("Appending row:", row); // Debugging log
-                        orderTableBody.appendChild(row); // Append the new row to the table body
+                        orderTableBody.appendChild(row);
                     });
 
-                    // Add event listeners to delete buttons
-                    const deleteButtons = document.querySelectorAll('.delete-button');
+                    // Attach event listeners to delete buttons
+                    const deleteButtons = document.querySelectorAll(".delete-button");
                     deleteButtons.forEach(button => {
-                        button.addEventListener('click', function() {
-                            const orderId = this.getAttribute('data-id');
+                        button.addEventListener("click", function () {
+                            const orderId = this.getAttribute("data-id");
                             deleteOrder(orderId);
                         });
                     });
 
-                    // Add event listeners to edit buttons
-                    const editButtons = document.querySelectorAll('.edit-button');
+                    // Attach event listeners to edit buttons
+                    const editButtons = document.querySelectorAll(".edit-button");
                     editButtons.forEach(button => {
-                        button.addEventListener('click', function() {
-                            const orderId = this.getAttribute('data-id');
-                            const foodName = this.getAttribute('data-food');
-                            const quantity = this.getAttribute('data-quantity');
-                            const price = this.getAttribute('data-price');
+                        button.addEventListener("click", function () {
+                            const orderId = this.getAttribute("data-id");
+                            const foodName = this.getAttribute("data-food");
+                            const quantity = this.getAttribute("data-quantity");
+                            const price = this.getAttribute("data-price");
 
-                            // Populate the form with the current order details
-                            foodSelect.value = foodName; // Assuming foodSelect has the food names
-                            quantityInput.value = quantity;
-                            priceInput.value = price;
+                            // Populate modal fields
+                            editFoodName.value = foodName;
+                            editQuantity.value = quantity;
+                            editPrice.value = price;
+                            editOrderId.value = orderId;
 
-                            // Update the form submission to handle updates
-                            foodForm.onsubmit = function(event) {
-                                event.preventDefault(); // Prevent default form submission
-
-                                const updatedData = new FormData(foodForm);
-                                updatedData.append('id', orderId); // Add the order ID to the form data
-
-                                fetch("orders.php", {
-                                    method: "PUT", // Use PUT for updates
-                                    body: updatedData
-                                })
-                                .then(response => response.text())
-                                .then(data => {
-                                    alert(data); // Show success or error message
-                                    fetchOrders(); // Refresh the order list
-                                    foodForm.reset(); // Reset the form
-                                    priceInput.value = ""; // Clear the price input
-                                    quantityInput.value = 1; // Reset quantity to 1
-                                })
-                                .catch(error => console.error("Error updating order:", error));
-                            };
+                            // Show the modal
+                            editOrderModal.show();
                         });
                     });
                 } else {
-                    // If no orders, display a message
                     orderTableBody.innerHTML = "<tr><td colspan='6' class='text-center'>No orders found.</td></tr>";
                 }
             })
             .catch(error => console.error("Error fetching orders:", error));
     }
 
+    // Handle form submission in the edit modal
+    editOrderForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(editOrderForm);
+        fetch("orders.php", {
+            method: "PUT",
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+            fetchOrders();
+            editOrderModal.hide();
+        })
+        .catch(error => console.error("Error updating order:", error));
+    });
+
+    // Delete order
     function deleteOrder(orderId) {
         if (confirm("Are you sure you want to delete this order?")) {
             fetch(`orders.php?id=${orderId}`, { method: "DELETE" })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Delete response:", data);
-                                // Refresh the order list after deletion
-                                fetchOrders();
-                            })
-                            .catch(error => console.error("Error deleting order:", error));
-                        }
-                    }
-                
-                    // Update price based on selected food item
-                    foodSelect.addEventListener("change", () => {
-                        const selectedOption = foodSelect.options[foodSelect.selectedIndex];
-                        const price = selectedOption.getAttribute("data-price");
-                        priceInput.value = price;
-                        calculateTotal(); // Calculate total when food item is selected
-                    });
-                
-                    // Calculate total price based on quantity
-                    quantityInput.addEventListener("input", calculateTotal);
-                
-                    function calculateTotal() {
-                        const quantity = quantityInput.value;
-                        const price = priceInput.value;
-                        const total = quantity * price;
-                        // You can display the total in a separate field if needed
-                        // For example, you can create a new input field for total
-                        // document.getElementById("total").value = total.toFixed(2);
-                    }
-                
-                    // Handle form submission to add an order
-                    foodForm.addEventListener("submit", (event) => {
-                        event.preventDefault(); // Prevent default form submission
-                
-                        const formData = new FormData(foodForm);
-                        fetch("orders.php", {
-                            method: "POST",
-                            body: formData
-                        })
-                        .then(response => response.text())
-                        .then(data => {
-                            alert(data); // Show success or error message
-                            fetchOrders(); // Refresh the order list
-                            foodForm.reset(); // Reset the form
-                            priceInput.value = ""; // Clear the price input
-                            quantityInput.value = 1; // Reset quantity to 1
-                        })
-                        .catch(error => console.error("Error adding order:", error));
-                    });
-                
-                    // Initial fetch to load existing orders
-                    fetchOrders();
-                });
+                .then(response => {
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    return response.json();
+                })
+                .then(() => fetchOrders())
+                .catch(error => console.error("Error deleting order:", error));
+        }
+    }
+
+    // Handle food selection changes
+    foodSelect.addEventListener("change", () => {
+        const selectedOption = foodSelect.options[foodSelect.selectedIndex];
+        const price = selectedOption.getAttribute("data-price");
+        priceInput.value = price;
+    });
+
+    // Handle order form submission
+    foodForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(foodForm);
+        fetch("orders.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+            fetchOrders();
+            foodForm.reset();
+            priceInput.value = "";
+            quantityInput.value = 1;
+        })
+        .catch(error => console.error("Error adding order:", error));
+    });
+
+    // Initial setup
+    populateEditFoodOptions();
+    fetchOrders();
+});
