@@ -15,6 +15,66 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(data => {
                 orderTableBody.innerHTML = "";
 
+                // Add inline CSS dynamically
+const style = document.createElement("style");
+style.textContent = `
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow-x: auto;
+    }
+    th, td {
+        padding: 8px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+    .edit-quantity {
+        width: 100%;
+        padding: 5px;
+        box-sizing: border-box;
+        font-size: 1rem;
+    }
+    .edit-button,
+    .delete-button {
+        font-size: 0.8rem;
+        padding: 5px;
+    }
+    @media (max-width: 768px) {
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+        thead tr {
+            display: none;
+        }
+        tr {
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        td {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 10px;
+            text-align: left;
+        }
+        td::before {
+            content: attr(data-label);
+            font-weight: bold;
+            flex: 1;
+            padding-right: 10px; /* Add spacing between the label and value */
+            color: #333; /* Optional: Add label color for clarity */
+        }
+        .edit-quantity {
+            max-width: 60px;
+        }
+        .edit-button, .delete-button {
+            width: 48%;
+        }
+    }
+`;
+document.head.appendChild(style);
+
                 if (Array.isArray(data) && data.length > 0) {
                     data.forEach(order => {
                         const totalPrice = (order.quantity * parseFloat(order.price)).toFixed(2);
@@ -23,12 +83,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         row.innerHTML = `
                             <td>${order.id}</td>
                             <td>${order.foodName}</td>
-                            <td><input type="number" class="edit-quantity" value="${order.quantity}" min="1" disabled></td>
+                            <td><input type="number" class="edit-quantity" style="max-width: 60px; width: 100%; padding: 5px; box-sizing: border-box; font-size: 1rem;" value="${order.quantity}" min="1" disabled></td>
                             <td>${parseFloat(order.price).toFixed(2)}</td>
                             <td class="total-price">${totalPrice}</td>
                             <td>
-                                <button class="edit-button btn btn-sm btn-primary">Edit</button>
-                                <button class="delete-button btn btn-sm btn-danger" data-id="${order.id}">Delete</button>
+                                <button class="edit-button btn btn-sm btn-primary" style="font-size: 0.8rem; padding: 5px;">Edit</button>
+                                <button class="delete-button btn btn-sm btn-danger" style="font-size: 0.8rem; padding: 5px;" data-id="${order.id}">Delete</button>
                             </td>
                         `;
                         orderTableBody.appendChild(row);
@@ -68,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             deleteOrder(orderId);
                         });
                     });
-                    
+
                 } else {
                     orderTableBody.innerHTML = "<tr><td colspan='6' class='text-center'>No orders found.</td></tr>";
                 }
@@ -112,15 +172,15 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             body: JSON.stringify({ id: orderId, quantity: quantity })
         })
-        .then(response => {
-            if (!response.ok) throw new Error("Network response was not ok");
-            return response.json();
-        })
-        .then(data => {
-            alert("Order updated successfully.");
-            fetchOrders(); // Refresh the order list
-        })
-        .catch(error => console.error("Error updating order:", error));
+            .then(response => {
+                if (!response.ok) throw new Error("Network response was not ok");
+                return response.json();
+            })
+            .then(data => {
+                alert("Order updated successfully.");
+                fetchOrders(); // Refresh the order list
+            })
+            .catch(error => console.error("Error updating order:", error));
     }
 
     // Handle food selection changes
@@ -139,18 +199,18 @@ document.addEventListener("DOMContentLoaded", () => {
             method: "POST",
             body: formData
         })
-        .then(response => {
-            if (!response.ok) throw new Error("Network response was not ok");
-            return response.text();
-        })
-        .then(data => {
-            alert(data);
-            fetchOrders(); // Refresh the order list
-            foodForm.reset(); // Reset the form
-            priceInput.value = ""; // Clear the price input
-            quantityInput.value = 1; // Reset quantity input to 1
-        })
-        .catch(error => console.error("Error adding order:", error));
+            .then(response => {
+                if (!response.ok) throw new Error("Network response was not ok");
+                return response.text();
+            })
+            .then(data => {
+                alert(data);
+                fetchOrders(); // Refresh the order list
+                foodForm.reset(); // Reset the form
+                priceInput.value = ""; // Clear the price input
+                quantityInput.value = 1; // Reset quantity input to 1
+            })
+            .catch(error => console.error("Error adding order:", error));
     });
 
     // Initial setup
