@@ -5,18 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const priceInput = document.getElementById("price");
     const foodForm = document.getElementById("foodForm");
 
-    const editOrderModal = new bootstrap.Modal(document.getElementById("editOrderModal"));
-    const editOrderForm = document.getElementById("editOrderForm");
-    const editFoodName = document.getElementById("editFoodName");
-    const editQuantity = document.getElementById("editQuantity");
-    const editPrice = document.getElementById("editPrice");
-    const editOrderId = document.getElementById("editOrderId");
-
-    // Copy food options to the edit modal select element
-    function populateEditFoodOptions() {
-        editFoodName.innerHTML = foodSelect.innerHTML;
-    }
-
     // Fetch orders from the server
     function fetchOrders() {
         fetch("orders.php?action=fetch")
@@ -29,19 +17,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (Array.isArray(data) && data.length > 0) {
                     data.forEach(order => {
+                        const totalPrice = (order.quantity * parseFloat(order.price)).toFixed(2);
                         const row = document.createElement("tr");
+                        row.setAttribute("data-id", order.id);
                         row.innerHTML = `
                             <td>${order.id}</td>
                             <td>${order.foodName}</td>
-                            <td>${order.quantity}</td>
+                            <td><input type="number" class="edit-quantity" value="${order.quantity}" min="1" disabled></td>
                             <td>${parseFloat(order.price).toFixed(2)}</td>
-                            <td>${(order.quantity * parseFloat(order.price)).toFixed(2)}</td>
+                            <td class="total-price">${totalPrice}</td>
                             <td>
-                                <button class="edit-button btn btn-sm btn-primary" data-id="${order.id}" data-food="${order.foodName}" data-quantity="${order.quantity}" data-price="${order.price}">Edit</button>
+                                <button class="edit-button btn btn-sm btn-primary">Edit</button>
                                 <button class="delete-button btn btn-sm btn-danger" data-id="${order.id}">Delete</button>
                             </td>
                         `;
                         orderTableBody.appendChild(row);
+                    });
+
+                    // Attach event listeners to edit buttons
+                    const editButtons = document.querySelectorAll(".edit-button");
+                    editButtons.forEach(button => {
+                        button.addEventListener("click", function () {
+                            const row = this.closest("tr");
+                            const quantityInput = row.querySelector(".edit-quantity");
+
+                            if (this.textContent === "Edit") {
+                                // Enable editing
+                                quantityInput.disabled = false;
+                                this.textContent = "Save";
+                            } else {
+                                // Save changes
+                                const orderId = row.getAttribute("data-id");
+                                const quantity = quantityInput.value;
+                                const price = parseFloat(row.children[2].textContent);
+                                const totalPriceCell = row.querySelector(".total-price");
+
+                                totalPriceCell.textContent = (quantity * price).toFixed(2);
+                                quantityInput.disabled = true;
+                                this.textContent = "Edit";
+                                updateOrder(orderId, quantity);
+                            }
+                        });
                     });
 
                     // Attach event listeners to delete buttons
@@ -52,50 +68,13 @@ document.addEventListener("DOMContentLoaded", () => {
                             deleteOrder(orderId);
                         });
                     });
-
-                    // Attach event listeners to edit buttons
-                    const editButtons = document.querySelectorAll(".edit-button");
-                    editButtons.forEach(button => {
-                        button.addEventListener("click", function () {
-                            const orderId = this.getAttribute("data-id");
-                            const foodName = this.getAttribute("data-food");
-                            const quantity = this.getAttribute("data-quantity");
-                            const price = this.getAttribute("data-price");
-
-                            // Populate modal fields
-                            editFoodName.value = foodName;
-                            editQuantity.value = quantity;
-                            editPrice.value = price;
-                            editOrderId.value = orderId;
-
-                            // Show the modal
-                            editOrderModal.show();
-                        });
-                    });
+                    
                 } else {
                     orderTableBody.innerHTML = "<tr><td colspan='6' class='text-center'>No orders found.</td></tr>";
                 }
             })
             .catch(error => console.error("Error fetching orders:", error));
     }
-
-    // Handle form submission in the edit modal
-    editOrderForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-
-        const formData = new FormData(editOrderForm);
-        fetch("orders.php", {
-            method: "PUT",
-            body: formData
-        })
-        .then(response => response.text())
-        .then(data => {
-            alert(data);
-            fetchOrders();
-            editOrderModal.hide();
-        })
-        .catch(error => console.error("Error updating order:", error));
-    });
 
     // Delete order
     function deleteOrder(orderId) {
@@ -108,6 +87,41 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then(() => fetchOrders())
                 .catch(error => console.error("Error deleting order:", error));
         }
+    }
+
+
+    // Update order in the database
+    function updateOrder(orderId, quantity) {
+        fetch("orders.php", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id: orderId, quantity: quantity })
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+            fetchOrders();
+        })
+        .catch(error => console.error("Error updating order:", error));
+    }
+
+    // Delete order from the database
+    function deleteOrder(orderId) {
+        fetch("orders.php", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id: orderId })
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+            fetchOrders();
+        })
+        .catch(error => console.error("Error deleting order:", error));
     }
 
     // Handle food selection changes
@@ -138,6 +152,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Initial setup
-    populateEditFoodOptions();
     fetchOrders();
 });
