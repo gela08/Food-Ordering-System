@@ -62,25 +62,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['id'])) {
     exit;
 }
 
-// Handle update order request
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-    parse_str(file_get_contents("php://input"), $_PUT); // Parse the input data
+    // Parse the input
+    $input = json_decode(file_get_contents('php://input'), true);
 
-    $id = (int)$_PUT['id'];
-    $foodName = $_PUT['foodName'];
-    $quantity = (int)$_PUT['quantity'];
-    $price = (float)$_PUT['price'];
+    if (isset($input['id'], $input['quantity'])) {
+        $id = (int)$input['id'];
+        $quantity = (int)$input['quantity'];
 
-    $stmt = $conn->prepare("UPDATE orders SET foodName = ?, quantity = ?, price = ? WHERE id = ?");
-    $stmt->bind_param("sidi", $foodName, $quantity, $price, $id);
+        $stmt = $conn->prepare("UPDATE orders SET quantity = ? WHERE id = ?");
+        $stmt->bind_param("ii", $quantity, $id);
 
-    if ($stmt->execute()) {
-        echo "Order updated successfully";
+        if ($stmt->execute()) {
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "error" => $conn->error]);
+        }
+
+        $stmt->close();
     } else {
-        echo "Error: " . $conn->error;
+        echo json_encode(["success" => false, "error" => "Invalid input"]);
     }
-
-    $stmt->close();
     exit;
 }
 
