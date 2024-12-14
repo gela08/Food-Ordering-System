@@ -1,8 +1,19 @@
+
+/* CALLING ALL CSS FILES */
+
+/* Bootstrap CSS */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+@import url("styles/bg-gradient.css");
+@import url("styles/header.css");
+@import url("styles/marquee.css");
+
 /* Additional custom styles (minimal) */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-image: linear-gradient(to top, #38220f, #38220f, #a56400, #b88331, #dfc28a, #b88331, #a56400, #38220f, #38220f);
 }
 
 header {
@@ -108,7 +119,8 @@ button {
         width: 100%; /* Full width for smaller screens */
         margin: 0; /* Remove side margins */
         max-width: 100%; /* Ensure it doesn’t exceed screen width */
-        border-radius: 0; /* Optional: remove rounded corners for a flush look */
+        border-radius: 30px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
     }
 
     .coffee-item img {
@@ -118,6 +130,16 @@ button {
 
     .coffee-item-container {
         width: 100%; /* Ensure full width of the container */
+    }
+
+    .coffee-item:hover {
+        transform: scale(1.05); /* Slight zoom on hover */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+    }
+
+    .img-style {
+        height: auto;
+        border-radius: 30px; /* Matches card and image border radius */
     }
 }
 /* END OF COFFEE ITEMS CUSTOM DESIGN */
@@ -136,35 +158,18 @@ th, td {
     border: 1px solid #ddd;
 }
 
-@media (max-width: 768px) {
-    table, thead, tbody, th, td, tr {
+@media (max-width: 400px) {
+    .tableone td {
+        text-align: right;
         display: block;
+        font-size: 1em;
     }
 
-    thead tr {
-        display: none; /* Hide headers */
-    }
-
-    tbody tr {
-        margin-bottom: 15px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 10px;
-    }
-
-    td {
-        display: flex;
-        justify-content: space-between;
-        text-align: left;
-        padding: 5px 10px;
-    }
-
-    td::before {
-        content: attr(data-label); /* Add labels dynamically from data-label */
+    .tableone td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 6px;
         font-weight: bold;
-        color: #333;
-        flex: 1;
-        padding-right: 10px;
     }
 
     .edit-button, .delete-button {
