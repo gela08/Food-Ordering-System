@@ -128,54 +128,50 @@ button {
 table {
     width: 100%;
     border-collapse: collapse;
-    overflow-x: auto;
 }
+
 th, td {
     padding: 8px;
     text-align: center;
     border: 1px solid #ddd;
 }
-.edit-quantity {
-    width: 100%;
-    padding: 5px;
-    box-sizing: border-box;
-    font-size: 1rem;
-}
-.edit-button,
-.delete-button {
-    font-size: 0.8rem;
-    padding: 5px;
-}
+
 @media (max-width: 768px) {
     table, thead, tbody, th, td, tr {
         display: block;
     }
+
     thead tr {
-        display: none;
+        display: none; /* Hide headers */
     }
-    tr {
+
+    tbody tr {
         margin-bottom: 15px;
         border: 1px solid #ddd;
-        padding: 10px;
         border-radius: 5px;
+        padding: 10px;
     }
+
     td {
         display: flex;
         justify-content: space-between;
-        padding: 5px 10px;
         text-align: left;
+        padding: 5px 10px;
     }
+
     td::before {
-        content: attr(data-label);
+        content: attr(data-label); /* Add labels dynamically from data-label */
         font-weight: bold;
+        color: #333;
         flex: 1;
-        padding-right: 10px; /* Add spacing between the label and value */
-        color: #333; /* Optional: Add label color for clarity */
+        padding-right: 10px;
     }
-    .edit-quantity {
-        max-width: 60px;
-    }
+
     .edit-button, .delete-button {
-        width: 48%;
+        width: 48%; /* Adjust button sizes */
+    }
+
+    .total-price, .edit-quantity {
+        max-width: 100%; /* Ensure proper scaling */
     }
 }

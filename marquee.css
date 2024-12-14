@@ -1,32 +1,66 @@
-.marquee-container {
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.wrapper {
   width: 100%;
-  background-color: #f8f9fa;
-  padding: 15px 0;
+  max-width: 1536px;
+  margin: 5rem auto;
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  mask-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 1) 20%,
+      rgba(0, 0, 0, 1) 80%,
+      rgba(0, 0, 0, 0)
+  );
+  -webkit-mask-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 1) 20%,
+      rgba(0, 0, 0, 1) 80%,
+      rgba(0, 0, 0, 0)
+  );
 }
 
-.marquee-content {
-  display: flex;
-  animation: marquee 20s linear infinite;
-}
-
-.marquee-item {
-  flex: 0 0 auto;
-  padding: 0 20px;
-  font-size: 1.2rem;
-  color: #495057;
-}
-
-@keyframes marquee {
-  0% {
-    transform: translateX(100%);
+@keyframes scrollLeft {
+  to {
+      left: -200px;
   }
-
-  100% {
-    transform: translateX(-100%);
-  }
 }
 
-/* Optional: Pause animation on hover */
-.marquee-container:hover .marquee-content {
-  animation-play-state: paused;
+.item {
+  width: 200px;
+  height: 190px;
+  background-color: red;
+  border-radius: 30px;
+  position: absolute;
+  left: max(calc(200px * 8), 100%);
+  animation: scrollLeft 30s linear infinite;
 }
+
+/* COFFEE SERIES */
+.item:nth-child(1) { animation-delay: calc(30s / 8 * (8 - 1) * -1); }
+.item:nth-child(2) { animation-delay: calc(30s / 8 * (8 - 2) * -1); }
+.item:nth-child(3) { animation-delay: calc(30s / 8 * (8 - 3) * -1); }
+.item:nth-child(4) { animation-delay: calc(30s / 8 * (8 - 4) * -1); }
+.item:nth-child(5) { animation-delay: calc(30s / 8 * (8 - 5) * -1); }
+.item:nth-child(6) { animation-delay: calc(30s / 8 * (8 - 6) * -1); }
+.item:nth-child(7) { animation-delay: calc(30s / 8 * (8 - 7) * -1); }
+.item:nth-child(8) { animation-delay: calc(30s / 8 * (8 - 8) * -1); }
+/* END OF COFFEE SERIES */
+
+/* NON-COFFEE SERIES */
+.item:nth-child(9) { animation-delay: calc(30s / 8 * (8 - 1) * -1); }
+.item:nth-child(10) { animation-delay: calc(30s / 8 * (8 - 2) * -1); }
+.item:nth-child(11) { animation-delay: calc(30s / 8 * (8 - 3) * -1); }
+.item:nth-child(12) { animation-delay: calc(30s / 8 * (8 - 4) * -1); }
+.item:nth-child(13) { animation-delay: calc(30s / 8 * (8 - 5) * -1); }
+.item:nth-child(14) { animation-delay: calc(30s / 8 * (8 - 6) * -1); }
+/* END OF NON-COFFEE SERIES */
+
+.item:nth-child(15) { animation-delay: calc(30s / 8 * (8 - 7) * -1); }
+.item:nth-child(16) { animation-delay: calc(30s / 8 * (8 - 8) * -1); }
