@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 // Save changes
                                 const orderId = row.getAttribute("data-id");
                                 const quantity = quantityInput.value;
-                                const price = parseFloat(row.children[2].textContent);
+                                const price = parseFloat(row.children[3].textContent); // Corrected index for price
                                 const totalPriceCell = row.querySelector(".total-price");
 
                                 totalPriceCell.textContent = (quantity * price).toFixed(2);
@@ -76,19 +76,32 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch(error => console.error("Error fetching orders:", error));
     }
 
-    // Delete order
-    function deleteOrder(orderId) {
-        if (confirm("Are you sure you want to delete this order?")) {
-            fetch(`orders.php?id=${orderId}`, { method: "DELETE" })
-                .then(response => {
-                    if (!response.ok) throw new Error("Network response was not ok");
-                    return response.json();
-                })
-                .then(() => fetchOrders())
-                .catch(error => console.error("Error deleting order:", error));
-        }
+    // Confirm function
+    function confirmAction(message) {
+        return new Promise((resolve) => {
+            const confirmed = confirm(message);
+            resolve(confirmed);
+        });
     }
 
+    // Delete order function
+    function deleteOrder(orderId) {
+        confirmAction("Are you sure you want to delete this order?")
+            .then((isConfirmed) => {
+                if (isConfirmed) {
+                    fetch(`orders.php?id=${orderId}`, { method: "DELETE" })
+                        .then(response => {
+                            if (!response.ok) throw new Error("Network response was not ok");
+                            return response.json();
+                        })
+                        .then(() => {
+                            alert("Order deleted successfully.");
+                            fetchOrders(); // Refresh the order list
+                        })
+                        .catch(error => console.error("Error deleting order:", error));
+                }
+            });
+    }
 
     // Update order in the database
     function updateOrder(orderId, quantity) {
@@ -99,29 +112,15 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             body: JSON.stringify({ id: orderId, quantity: quantity })
         })
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok");
+            return response.json();
+        })
         .then(data => {
-            alert(data);
-            fetchOrders();
+            alert("Order updated successfully.");
+            fetchOrders(); // Refresh the order list
         })
         .catch(error => console.error("Error updating order:", error));
-    }
-
-    // Delete order from the database
-    function deleteOrder(orderId) {
-        fetch("orders.php", {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ id: orderId })
-        })
-        .then(response => response.text())
-        .then(data => {
-            alert(data);
-            fetchOrders();
-        })
-        .catch(error => console.error("Error deleting order:", error));
     }
 
     // Handle food selection changes
@@ -140,17 +139,20 @@ document.addEventListener("DOMContentLoaded", () => {
             method: "POST",
             body: formData
         })
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok");
+            return response.text();
+        })
         .then(data => {
             alert(data);
-            fetchOrders();
-            foodForm.reset();
-            priceInput.value = "";
-            quantityInput.value = 1;
+            fetchOrders(); // Refresh the order list
+            foodForm.reset(); // Reset the form
+            priceInput.value = ""; // Clear the price input
+            quantityInput.value = 1; // Reset quantity input to 1
         })
         .catch(error => console.error("Error adding order:", error));
     });
 
     // Initial setup
-    fetchOrders();
+    fetchOrders(); // Fetch orders when the page loads
 });
